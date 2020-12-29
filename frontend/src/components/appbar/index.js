@@ -11,7 +11,7 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
-import { Button, ButtonGroup, Drawer, IconButton, makeStyles, Menu, withStyles } from "@material-ui/core";
+import { Button, ButtonGroup, Drawer, IconButton, makeStyles, Menu, MenuItem, withStyles } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu'
 import List from '@material-ui/core/List';
@@ -67,8 +67,9 @@ class Appbar extends Component {
     }
 
     handleRoutesClick = e => {
-        var path = e.target.innerText.toLowerCase()
+        const path = e.target.innerText.toLowerCase()
         console.log(path)
+        path.replaceAll(' ', '/')
         this.setState({
             drawerToggled: false,
             actionsToggled: false
@@ -117,17 +118,25 @@ class Appbar extends Component {
                 
                 <Menu 
                     id="simple-menu"
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }}
                     keepMounted
                     open={this.state.actionsToggled}
                     onClose={e => this.setState({ actionsToggled: false })}
                 >
+                    <List>
                     {children}
+                    </List>
                 </Menu>
             </div>
         )
     }
 
     renderUserAvatar = () => {
+        // having some account settings tab if click the more button (do a layered like facebook)
         return (<div>
             <Button onClick={e => this.handleRoutesClick(e)} color="inherit">Signout</Button>
         </div>)
@@ -137,15 +146,17 @@ class Appbar extends Component {
         const {RenderMenu} = this
         
         if (this.props.authenticated) {
+            // when user authenticated, show these when more button is toggled
             return <RenderMenu><div>
-            <Button onClick={e => this.handleRoutesClick(e)} color="inherit">Threads</Button>
-            <Button onClick={e => this.handleRoutesClick(e)} color="inherit">Courses</Button>
+            <MenuItem onClick={e => this.handleRoutesClick(e)} color="inherit">Threads</MenuItem>
+            <MenuItem onClick={e => this.handleRoutesClick(e)} color="inherit">Courses</MenuItem>
             {this.renderUserAvatar()}
             </div></RenderMenu>
         } else {
+            // if no auth, then show these
             return <RenderMenu><div>
-                <Button onClick={e => this.handleRoutesClick(e)} color="inherit">Signin</Button>
-                <Button onClick={e => this.handleRoutesClick(e)} color="inherit">Signup</Button>
+                <MenuItem onClick={e => this.handleRoutesClick(e)} color="inherit">Signin</MenuItem>
+                <MenuItem onClick={e => this.handleRoutesClick(e)} color="inherit">Signup</MenuItem>
             </div></RenderMenu>
         }
     }

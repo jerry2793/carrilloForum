@@ -17,6 +17,10 @@ app.use(cors());
 app.use(bodyParser.json({ type: '*/*' }));
 router(app);
 
+
+app.use('/courses',require('./controllers/courses'))
+
+
 // Server Setup
 const port = process.env.PORT || 3090;
 const server = http.createServer(app);

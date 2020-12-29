@@ -15,12 +15,17 @@ import Feature from './components/Feature';
 import Signout from './components/auth/Signout';
 import Signin from './components/auth/Signin';
 
-import Threads from './components/Threads'
+import Courses from './components/courses'
+import Threads from './components/threads/index'
 
 const store = createStore(
   reducers,
+  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   {
-    auth: { authenticated: localStorage.getItem('token') }
+
+    auth: { authenticated: localStorage.getItem('token') },
+    courses: []
+    
   },
   applyMiddleware(reduxThunk)
 );
@@ -37,6 +42,7 @@ const Renders = props => {
         <Route path="/signout" component={Signout} />
         <Route path="/signin" component={Signin} />
         <Route path='/threads' component={Threads} />
+        <Route path='/courses' component={Courses} />
       </App>
 
     </BrowserRouter>

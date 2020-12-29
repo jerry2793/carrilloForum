@@ -2,7 +2,7 @@ import Axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import requireAuth from "./requireAuth";
+import requireAuth from "../requireAuth";
 
 
 function mapStateToProps(state) {
@@ -19,13 +19,6 @@ class Threads extends Component {
         }
         this.token = this.props.token
     }
-    
-    // async componentDidMount() {
-        // fetch when user signs in in the actions redux middleware
-    //     const res = await Axios.get('/user/threads', {headers: 
-    //         { authorization: this.token }
-    //     })
-    // }
     
     render() {
         return (
