@@ -19,6 +19,7 @@ router(app);
 
 
 app.use('/courses',require('./controllers/courses'))
+app.use('/users', require('./controllers/users'))
 
 
 // Server Setup

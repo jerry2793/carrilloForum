@@ -1,9 +1,7 @@
-import Axios from 'axios';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import requireAuth from "../requireAuth";
-
+import requireAuth from '../requireAuth'
 
 function mapStateToProps(state) {
     return {
@@ -11,19 +9,17 @@ function mapStateToProps(state) {
     };
 }
 
-class Threads extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+function mapDispatchToProps(dispatch) {
+    return {
 
-        }
-        this.token = this.props.token
-    }
-    
+    };
+}
+
+class Messenger extends Component {
     render() {
         return (
             <div>
-                <p>Threads</p>
+                <h2>Messenger</h2>
             </div>
         );
     }
@@ -31,4 +27,4 @@ class Threads extends Component {
 
 export default connect(
     mapStateToProps,
-)(requireAuth(Threads));
+)(requireAuth(Messenger));

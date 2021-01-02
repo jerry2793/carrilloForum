@@ -69,7 +69,7 @@ class Appbar extends Component {
     handleRoutesClick = e => {
         const path = e.target.innerText.toLowerCase()
         console.log(path)
-        path.replaceAll(' ', '/')
+        path.replace(' ', '/')
         this.setState({
             drawerToggled: false,
             actionsToggled: false

@@ -6,6 +6,7 @@ import * as types from './types'
 export const fetCourses = async token => dispatch => {
     Axios.defaults.headers['authorization'] = token
 
+    Axios.get('/users/threads')
 }
 
 // grab all relevant user data from backend (later utalize graphql for backend)
@@ -13,7 +14,7 @@ export const fetCourses = async token => dispatch => {
 export const fetchUserData = async (token) => dispatch => {
     Axios.defaults.headers['authorization'] = token
 
-    const fetchData = (type, disp_type, dispatch) => {
+    const fetchData = async (type, disp_type, dispatch) => {
         const res = await Axios.get('/users/' + type)
         dispatch({ types: disp_type, payload: res.data })
     }

@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import requireAuth from '../requireAuth'
 
 import CourseCard from './coursecard'
+import CreateCourse from './create/index'
 
 function mapStateToProps(state) {
     return {
-        courses: state.courses
+        courses: state.courses,
+        token: state.auth.authenticated
     };
 }
 
@@ -25,9 +27,11 @@ class Course extends Component {
         
         return (
             <div>
+                <h1>My Courses</h1>
                 {/* {this.props.courses.all.map(course => {
                     <CourseCard />
                 })} */}
+                <CreateCourse />
             </div>
         );
     }

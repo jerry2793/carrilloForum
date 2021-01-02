@@ -5,3 +5,7 @@ export const FETCH_THREADS = 'FETCH_THREADS';
 export const FETCH_FRIENDS = 'FETCH_FRIENDS';
 export const FETCH_COURSES = 'FETCH_COURSES';
 export const FETCH_ERROR = 'FETCH_ERROR';
+
+export const SET_OPERATION = 'SET_OPERATION'
+
+export const CREATE_COURSE = 'CREATE_COURSE'

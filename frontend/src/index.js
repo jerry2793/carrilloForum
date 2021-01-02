@@ -24,7 +24,8 @@ const store = createStore(
   {
 
     auth: { authenticated: localStorage.getItem('token') },
-    courses: []
+    courses: [],
+    buttonInOperation: false
     
   },
   applyMiddleware(reduxThunk)

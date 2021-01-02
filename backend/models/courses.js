@@ -11,6 +11,7 @@ const courseShema = new Schema({
       lowercase: true,
   },
   description: String,
+  type: objId,
   owner: objId,
   pending: [objId],
   enrolled: [objId],

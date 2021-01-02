@@ -3,6 +3,7 @@ import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import { TextField } from '@material-ui/core';
 
 class Signin extends Component {
   onSubmit = formProps => {
@@ -13,6 +14,7 @@ class Signin extends Component {
 
   render() {
     const { handleSubmit } = this.props;
+    const Input = props => <TextField {...props.input} />
 
     return (
       <form onSubmit={handleSubmit(this.onSubmit)}>
