@@ -1,2 +1,2 @@
 # carrilloForum
-## helping communities connect with one another
+## helping communities members connect with one another
