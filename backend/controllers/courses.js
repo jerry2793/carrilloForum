@@ -2,6 +2,7 @@ const router = require('express').Router()
 
 const Courses = require('../models/courses')
 const CourseTypes = require('../models/courseTypes')
+const Files = require('../models/files')
 
 const Authentication = require('../controllers/authentication');
 const passportService = require('../services/passport');
@@ -11,6 +12,10 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 const requrieAdmin = require('../middlewares/reqAdmin')
 // const requireSignin = passport.authenticate('local', { session: false });
 
+
+router.get('/types/picture/:id', (req,res) => {
+    res.send(Files.findById(req.params.id))
+})
 
 router.get('/types', (req,res) => {
     res.json(CourseTypes.find())

@@ -9,6 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { compose } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
+import Input from '../../inputs/TextField'
 import TypeSelect from './selectCourseType'
 
 
@@ -33,14 +34,16 @@ class CreateCourse extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addMenuToggled: false
+            addMenuToggled: false,
+            courseSelected: '',
+            previousCourseSelected: '',
         }
     }
     
     Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
-    
+
     handleCourseAddButtonClick = (e, operation, cb) => {
         // console.log(e.target)
         this.props.buttonClicked(true)
@@ -55,6 +58,10 @@ class CreateCourse extends Component {
             undefined, 
             () => this.props.dispatchCourse(formProps)
         )
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log('previous state: ', prevState)
     }
       
     render() {
@@ -77,16 +84,18 @@ class CreateCourse extends Component {
                                     Create a New Course
                                 </Typography>
                                 
-                                <Button onClick={this.props.handleSubmit(this.createCourseSubmit)} color='inherit'>Create</Button>
+                                <Button disabled={this.props.submitting} onClick={this.props.handleSubmit(this.createCourseSubmit)} color='inherit'>
+                                    Create
+                                </Button>
                         </Toolbar>
                     </AppBar>
                     <form>
                         <Field
-                            label="course name"
+                            // label="course name"
                             name="course-name"
                             component={props => (
-                                <TextField {...props.input}
-                                    label='Course Name'
+                                <Input {...props.input}
+                                    label="Course Name"
                                     autoFocus
                                     autoComplete='off'
                                 />
@@ -95,7 +104,14 @@ class CreateCourse extends Component {
                         <Field 
                             label="course type"
                             name="course-type"
-                            component={(props) => <TypeSelect handleSubmit={() => {}} {...props.input} />}
+                            component={props => (<TypeSelect 
+                                courseSelected={this.state.courseSelected}
+                                setCourseSelected={val => this.setState({ courseSelected: val })}
+
+                                setPreviousCourseSelected={val => this.setState({ previousCourseSelected: val })}
+                                previousCourseSelected={this.state.previousCourseSelected}
+                                { ...props }
+                            />)}
                         />
                     </form>
                 </Dialog>
@@ -126,7 +142,7 @@ export default compose(
         position: 'relative',
     },
     title: {
-        marginLeft: theme.spacing(2),
+        marginLeft: theme.spacing(1),
         flex: 1,
     },
 }))(CreateCourse) );

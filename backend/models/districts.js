@@ -4,15 +4,10 @@ const bcrypt = require('bcrypt-nodejs');
 
 // Define our model
 const userSchema = new Schema({
-  email: { type: String, unique: true, lowercase: true },
+  name: String,
   password: String,
-  district: mongoose.Types.ObjectId,
-  isAdmin: false,
-
-  timestamp: {
-    type: Date,
-    default: Date.now()
-  }
+  location: String,
+  meta: mongoose.Types.Subdocument
 });
 
 // On Save Hook, encrypt password

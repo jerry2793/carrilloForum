@@ -12,6 +12,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import CreateNewCourseForm from './CreateNewCourse'
+import { Tabs, Tab, AppBar } from '@material-ui/core';
+
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
@@ -23,14 +27,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DialogSelect(props) {
+// TabPanel.propTypes = {
+//   children: PropTypes.node,
+//   index: PropTypes.any.isRequired,
+//   value: PropTypes.any.isRequired,
+// };
+
+
+export default function SelectCourse({ courseSelected, setCourseSelected, previousCourseSelected, setPreviousCourseSelected, ...input }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const [courseSelected, setCourseSelected] = useState('')
+  const [currentTabValue, setCurrentTabValue] = useState(0)
+
+  const [tempCouseSelected, setTempCourseSelected] = useState(`${courseSelected}`)
 
   const handleChange = (event) => {
-    setCourseSelected(event)
+    console.log(event.target.value)
+    setTempCourseSelected(event.target.value)
   };
 
   const handleClickOpen = () => {
@@ -41,49 +55,82 @@ export default function DialogSelect(props) {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    props.handleSubmit()
-    handleChange()
+  const handleCancel = () => {
+    // setCourseSelected(previousCourseSelected);
+    setCourseSelected(previousCourseSelected)
+    handleClose()
   }
+
+  const handleTabChange = (event, newValue) => {
+    setCurrentTabValue(newValue)
+  }
+
+  const ExistingCourseSelectForm = (
+  <form className={classes.container}>
+    <FormControl className={classes.formControl}>
+      <InputLabel id="demo-dialog-select-label">Your Course Type</InputLabel>
+      <Select
+        labelId="demo-dialog-select-label"
+        id="demo-dialog-select"
+        value={tempCouseSelected}
+        onChange={handleChange}
+        input={<Input {...input} />}
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {/* set the value to be the course id, 
+        then what is displayed to be course.name */}
+        <MenuItem value={10}>Ten</MenuItem>
+        <MenuItem value={20}>Twenty</MenuItem>
+        <MenuItem value={30}>Thirty</MenuItem>
+      </Select>
+    </FormControl>
+  </form>
+  )
+
+  const ExistingCourseActions = (
+    <DialogActions>
+      
+        <Button onClick={handleCancel} color="primary">
+          {/* Cancel */}
+        </Button>
+        <Button onClick={e => {
+          handleClose(e)
+          setCourseSelected(tempCouseSelected)
+          setPreviousCourseSelected(tempCouseSelected)
+        }} color="primary">
+          Done
+        </Button>
+
+    </DialogActions>
+  )
 
   return (
     <div>
       <Button onClick={handleClickOpen}>Select Your Course Type</Button>
+
+
       <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
+        
         <DialogTitle>Select Your Course Type</DialogTitle>
-        <DialogContent>
-          <form className={classes.container}>
-            
-            <FormControl className={classes.formControl}>
-              <InputLabel id="demo-dialog-select-label">Your Course Type</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={courseSelected}
-                onChange={handleChange}
-                input={<Input />}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {/* set the value to be the course id, 
-                then what is displayed to be course.name */}
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </form>
+
+        <DialogContent dividers>
+
+          <Tabs color='primary' value={currentTabValue} onChange={handleTabChange}>
+            <Tab label='Use Existing Course Type' />
+            <Tab label='Create New Course Type' />
+          </Tabs>
+
+          {currentTabValue===0 && ExistingCourseSelectForm }
+          {currentTabValue===1 && <CreateNewCourseForm /> }
+
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
+
+        {ExistingCourseActions}
+
       </Dialog>
     </div>
   );
+  
 }
