@@ -1,3 +1,6 @@
+// the helper lib to do some redundant fetches. 
+// do not use this, planning to remove it when app is engineered
+
 import Axios from "axios"
 
 import * as types from './types'

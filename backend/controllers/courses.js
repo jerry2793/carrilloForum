@@ -21,6 +21,9 @@ router.get('/types', (req,res) => {
     res.json(CourseTypes.find())
 })
 
+
+// routees for normal course GPPD
+
 router.get('/:id', (req,res) => {
     Courses.findById(req.params.id)
         .then(course => res.json(course))

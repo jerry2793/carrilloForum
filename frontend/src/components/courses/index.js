@@ -1,3 +1,4 @@
+import { Tabs } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -27,11 +28,14 @@ class Course extends Component {
         
         return (
             <div>
-                <h1>My Courses</h1>
+                <h1>My Courses</h1> <CreateCourse />
                 {/* {this.props.courses.all.map(course => {
                     <CourseCard />
                 })} */}
-                <CreateCourse />
+                {/* Enrolled, Manage my Courses, Pending */}
+                {/* <Tabs>
+                    <Tab></Tab>
+                </Tabs> */}
             </div>
         );
     }

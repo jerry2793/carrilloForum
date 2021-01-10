@@ -1,21 +1,25 @@
-import { AppBar, Button, ButtonGroup, Dialog, FormControl, IconButton, Slide, TextField, Toolbar, Typography, withStyles } from '@material-ui/core';
+import { AppBar, Button, ButtonGroup, Dialog, FormControl, Grid, IconButton, Paper, Slide, TextField, Toolbar, Typography, withStyles } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as types from '../../../actions/types'
 
-import AddIcon from '@material-ui/icons/Add';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import { compose } from 'redux';
-import { Field, reduxForm } from 'redux-form';
+import { formValueSelector, reduxForm } from 'redux-form';
 
-import Input from '../../inputs/TextField'
-import TypeSelect from './selectCourseType'
+import CourseCreateForm from './courseCreateForm'
+import CourseCard from '../coursecard';
 
+
+const selector = formValueSelector('course-create-form')
 
 function mapStateToProps(state) {
     return {
-        disabled: state.buttonInOperation
+        disabled: state.buttonInOperation,
+        // courseCreating: selector(state, 'name', 'course-type', 'description'),
+        courseCreating: state.form['course-create-form']
     };
 }
 
@@ -30,6 +34,14 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
+function validate (values) {
+    const errors = {}
+    if (!values) {
+        errors.name = 'Fill out Course Name'
+    }
+    return errors
+}
+
 class CreateCourse extends Component {
     constructor(props) {
         super(props);
@@ -39,7 +51,7 @@ class CreateCourse extends Component {
             previousCourseSelected: '',
         }
     }
-    
+
     Transition = React.forwardRef(function Transition(props, ref) {
         return <Slide direction="up" ref={ref} {...props} />;
     });
@@ -60,19 +72,29 @@ class CreateCourse extends Component {
         )
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        console.log('previous state: ', prevState)
+    getNewCourse = () => {
+        if (this.props.courseCreating) {
+            return this.props.courseCreating.values
+        } else {
+            return {
+                img: '',
+                name: 'Course Name if statement false',
+                description: 'Course Description'
+            }
+        }
     }
       
     render() {
         const { classes } = this.props
-        // const Input = props => <TextField {...props.input} />
+        // const { invalid } = this.props
         
         return (
             <div className={classes.root}>
-                <IconButton onClick={e => {
+                <Button onClick={e => {
                     this.setState({ addMenuToggled: true })
-                }} className={classes.button}><AddIcon className={classes.icon} /></IconButton>
+                }} className={classes.button} endIcon={<AddCircleIcon className={classes.icon} />}>
+                    Create New Course
+                </Button>
                 <Dialog fullScreen open={this.state.addMenuToggled} onClose={e => this.handleCourseAddButtonClick(e)} TransitionComponent={this.Transition}>
                     <AppBar className={classes.appBar}>
                         <Toolbar>
@@ -89,31 +111,14 @@ class CreateCourse extends Component {
                                 </Button>
                         </Toolbar>
                     </AppBar>
-                    <form>
-                        <Field
-                            // label="course name"
-                            name="course-name"
-                            component={props => (
-                                <Input {...props.input}
-                                    label="Course Name"
-                                    autoFocus
-                                    autoComplete='off'
-                                />
-                            )}
-                        />
-                        <Field 
-                            label="course type"
-                            name="course-type"
-                            component={props => (<TypeSelect 
-                                courseSelected={this.state.courseSelected}
-                                setCourseSelected={val => this.setState({ courseSelected: val })}
 
-                                setPreviousCourseSelected={val => this.setState({ previousCourseSelected: val })}
-                                previousCourseSelected={this.state.previousCourseSelected}
-                                { ...props }
-                            />)}
-                        />
-                    </form>
+                    <Paper variant='outlined' style={{
+                        textAlign: 'center',
+                        margin: '0 20px'
+                    }}>
+                        <CourseCreateForm />
+                    </Paper>
+
                 </Dialog>
             </div>
         );
@@ -126,23 +131,25 @@ export default compose(
         mapDispatchToProps
     ),
     reduxForm({
-        form: 'course-create-form'
-    })
-)( withStyles(theme => ({
-    root: {
-        backgroundColor: ''
-    },
-    button: {
-        borderBlock: 'gray'
-    },
-    icon: {
-
-    },
-    appBar: {
-        position: 'relative',
-    },
-    title: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-}))(CreateCourse) );
+        form: 'course-create-form',
+        validate
+    }),
+    withStyles(theme => ({
+        root: {
+            backgroundColor: ''
+        },
+        button: {
+            borderBlock: 'gray'
+        },
+        icon: {
+    
+        },
+        appBar: {
+            position: 'relative',
+        },
+        title: {
+            marginLeft: theme.spacing(1),
+            flex: 1,
+        },
+    }))
+)( CreateCourse );

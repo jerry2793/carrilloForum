@@ -15,11 +15,16 @@ mongoose.connect('mongodb://localhost/carrilloForum');
 app.use(morgan('combined'));
 app.use(cors());
 app.use(bodyParser.json({ type: '*/*' }));
-router(app);
 
+app.use('/uploads', express.static('uploads'))
+
+
+// wrap the app into the two routers (no router way)
+router(app);
 
 app.use('/courses',require('./controllers/courses'))
 app.use('/users', require('./controllers/users'))
+app.use('/files', require('./controllers/files'))
 
 
 // Server Setup

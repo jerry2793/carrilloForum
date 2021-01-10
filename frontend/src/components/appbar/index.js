@@ -6,11 +6,6 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Slide from '@material-ui/core/Slide';
 import { Button, ButtonGroup, Drawer, IconButton, makeStyles, Menu, MenuItem, withStyles } from "@material-ui/core";
 
 import MenuIcon from '@material-ui/icons/Menu'
@@ -19,8 +14,12 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+
+import ClassIcon from '@material-ui/icons/Class';
+import HomeIcon from '@material-ui/icons/Home';
+import EmailIcon from '@material-ui/icons/Email';
+import SendIcon from '@material-ui/icons/Send';
+import HelpIcon from '@material-ui/icons/Help';
 import { withRouter } from "react-router-dom";
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -74,7 +73,31 @@ class Appbar extends Component {
             drawerToggled: false,
             actionsToggled: false
         })
-        this.props.history.push(`/${path}`)
+        if (path === 'homepage') {
+            this.props.history.push('/feature')
+        } else {
+            this.props.history.push(`/${path}`)
+        }
+    }
+
+    mapToIcon = text => {
+        switch (text) {
+            case 'threads':
+                return <EmailIcon />
+                break;
+
+            case 'courses':
+                return <ClassIcon />
+
+            case 'messenger':
+                return <SendIcon />
+
+            case 'my threads': 
+                return <HelpIcon />
+        
+            default:
+                break;
+        }
     }
 
     DrawerList = props => {
@@ -85,23 +108,32 @@ class Appbar extends Component {
             onClick={e => props.toggleDrawer(false)}
             onKeyDown={e => props.toggleDrawer(false)}
           >
-            <List>
-              {['Threads','Courses'].map((text, index) => (
-                <ListItem button onClick={e => this.handleRoutesClick(e)} key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
+              <List>
+                <ListItem button onClick={this.handleRoutesClick} key={'home'}>
+                    <ListItemIcon><HomeIcon /></ListItemIcon>
+                    <ListItemText primary="Homepage" />
                 </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {['My Questions', 'Messenger'].map((text, index) => (
-                <ListItem button onClick={e => this.handleRoutesClick(e)} key={text}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
-            </List>
+              </List>
+
+              <Divider />
+
+                <List>
+                {['Threads','Courses'].map((text, index) => (
+                    <ListItem button onClick={e => this.handleRoutesClick(e)} key={text}>
+                    <ListItemIcon>{this.mapToIcon(text.toLowerCase())}</ListItemIcon>
+                    <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+                </List>
+                <Divider />
+                <List>
+                {['My Threads', 'Messenger'].map((text, index) => (
+                    <ListItem button onClick={e => this.handleRoutesClick(e)} key={text}>
+                    <ListItemIcon>{this.mapToIcon(text.toLowerCase())}</ListItemIcon>
+                    <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+                </List>
           </div>)
     }
 

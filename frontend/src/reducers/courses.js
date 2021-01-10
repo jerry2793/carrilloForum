@@ -1,8 +1,16 @@
 import * as types from '../actions/types'
 
+
 const initialState = {
-    all: [],
-    newCourse: {}
+    all: [
+        {
+            name: 'course name',
+            description: 'description of a dummy reducer data course',
+            type: 'as;dlfhqowehoh'
+        }
+    ],
+    newCourse: {},
+    types: [],
 }
 
 export default (state = initialState, action) => {

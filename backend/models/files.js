@@ -2,8 +2,11 @@ const Mongoose = require('mongoose')
 const { Schema } = require("mongoose");
 
 const fileSchema = new Schema({
-    fileData: {
-        type: Buffer,
+    user: Mongoose.Types.ObjectId,
+    filePath: String,
+    isPublic: {
+        type: Boolean,
+        default: true
     },
     timestamp: {
         type: Date,

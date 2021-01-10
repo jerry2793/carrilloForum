@@ -1,10 +1,11 @@
+import { Button, FormControl } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 
 import Input from '../../inputs/TextField'
-import Textarea from '../../inputs/Textarea'
+import Textarea from '../../inputs/TextField'
 
 
 function mapStateToProps(state) {
@@ -26,8 +27,14 @@ class CreateNewCourse extends Component {
         />
         <Field 
           name='new-course-type-description'
-          component={props => (<Textarea {...props.input} />)}
+          component={props => (<Textarea 
+            label="Course Type Description"
+            {...props.input} 
+          />)}
         />
+        <Button type='submtit'>
+          Create New Course Type
+        </Button>
       </form>
     );
   }

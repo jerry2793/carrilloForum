@@ -18,6 +18,8 @@ function buttonInOperation (state=false, action) {
       break;
   }
 }
+
+
 export default combineReducers({
   auth,
   user,

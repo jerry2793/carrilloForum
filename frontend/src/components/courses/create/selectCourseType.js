@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
+import * as actions from '../../../actions/courses'
+
+import { change } from "redux-form";
+
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-import CreateNewCourseForm from './CreateNewCourse'
+import CreateNewCourseForm from './CreateNewCourseType'
 import { Tabs, Tab, AppBar } from '@material-ui/core';
 
 
@@ -34,21 +35,25 @@ const useStyles = makeStyles((theme) => ({
 // };
 
 
-export default function SelectCourse({ courseSelected, setCourseSelected, previousCourseSelected, setPreviousCourseSelected, ...input }) {
+export default function SelectCourse({ 
+  courseSelected, 
+  setCourseSelected, 
+  previousCourseSelected, 
+  setPreviousCourseSelected, 
+  value,
+  handleSelectChange,
+  ...input
+}) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
 
   const [currentTabValue, setCurrentTabValue] = useState(0)
 
-  const [tempCouseSelected, setTempCourseSelected] = useState(`${courseSelected}`)
 
   const handleChange = (event) => {
-    console.log(event.target.value)
-    setTempCourseSelected(event.target.value)
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
+    const { value } = event.target
+    // propogate the value up into the parent, and then use the value passed down
+    handleSelectChange(value)
+    console.log("child select triggered")
   };
 
   const handleClose = () => {
@@ -72,9 +77,10 @@ export default function SelectCourse({ courseSelected, setCourseSelected, previo
       <Select
         labelId="demo-dialog-select-label"
         id="demo-dialog-select"
-        value={tempCouseSelected}
+        value={value}
         onChange={handleChange}
-        input={<Input {...input} />}
+        // {...input}
+        input={<Input value={value} {...input} />}
       >
         <MenuItem value="">
           <em>None</em>
@@ -106,31 +112,16 @@ export default function SelectCourse({ courseSelected, setCourseSelected, previo
     </DialogActions>
   )
 
-  return (
-    <div>
-      <Button onClick={handleClickOpen}>Select Your Course Type</Button>
+  return (<div>
 
+      <Tabs color='primary' value={currentTabValue} onChange={handleTabChange}>
+        <Tab label='Use Existing Course Type' />
+        <Tab label='Create New Course Type' />
+      </Tabs>
 
-      <Dialog disableBackdropClick disableEscapeKeyDown open={open} onClose={handleClose}>
-        
-        <DialogTitle>Select Your Course Type</DialogTitle>
-
-        <DialogContent dividers>
-
-          <Tabs color='primary' value={currentTabValue} onChange={handleTabChange}>
-            <Tab label='Use Existing Course Type' />
-            <Tab label='Create New Course Type' />
-          </Tabs>
-
-          {currentTabValue===0 && ExistingCourseSelectForm }
-          {currentTabValue===1 && <CreateNewCourseForm /> }
-
-        </DialogContent>
-
-        {ExistingCourseActions}
-
-      </Dialog>
-    </div>
-  );
+      {currentTabValue===0 && ExistingCourseSelectForm }
+      {currentTabValue===1 && <CreateNewCourseForm /> }
+    
+    </div>)
   
 }
