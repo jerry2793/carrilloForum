@@ -13,13 +13,8 @@ const requrieAdmin = require('../middlewares/reqAdmin')
 // const requireSignin = passport.authenticate('local', { session: false });
 
 
-router.get('/types/picture/:id', (req,res) => {
-    res.send(Files.findById(req.params.id))
-})
-
-router.get('/types', (req,res) => {
-    res.json(CourseTypes.find())
-})
+// course type controllers: make authenticated request
+router.use('/types', require('./controllers/coursetypes'))
 
 
 // routees for normal course GPPD

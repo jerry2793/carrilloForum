@@ -18,6 +18,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import validator from 'validator'
+
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -51,6 +54,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+const validateEmail = email => {
+  if (!validator.isEmail(email)) {
+    return 'Not a valid email'
+  } else {
+    return ''
+  }
+}
 
 const renderInput = props => {
   const {
@@ -114,7 +125,7 @@ function Signin(props) {
             autoFocus
             id="email"
             autoComplete='off'
-            validate={required}
+            validate={[required, validateEmail]}
             component={renderInput}
           />
           <Field 

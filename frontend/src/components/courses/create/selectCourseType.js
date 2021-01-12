@@ -5,13 +5,12 @@ import * as actions from '../../../actions/courses'
 import { change } from "redux-form";
 
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
 import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+import Input from '../../inputs/TextField'
 
 import CreateNewCourseForm from './CreateNewCourseType'
 import { Tabs, Tab, AppBar } from '@material-ui/core';
@@ -36,25 +35,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function SelectCourse({ 
-  courseSelected, 
-  setCourseSelected, 
-  previousCourseSelected, 
-  setPreviousCourseSelected, 
-  value,
-  handleSelectChange,
-  ...input
+  input,
+  meta,
+  ...rest
 }) {
   const classes = useStyles();
 
   const [currentTabValue, setCurrentTabValue] = useState(0)
-
-
-  const handleChange = (event) => {
-    const { value } = event.target
-    // propogate the value up into the parent, and then use the value passed down
-    handleSelectChange(value)
-    console.log("child select triggered")
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -77,39 +64,22 @@ export default function SelectCourse({
       <Select
         labelId="demo-dialog-select-label"
         id="demo-dialog-select"
-        value={value}
-        onChange={handleChange}
-        // {...input}
-        input={<Input value={value} {...input} />}
+        error={true}
+        input={<Input {...input} {...rest} />}
       >
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
+
         {/* set the value to be the course id, 
         then what is displayed to be course.name */}
         <MenuItem value={10}>Ten</MenuItem>
         <MenuItem value={20}>Twenty</MenuItem>
         <MenuItem value={30}>Thirty</MenuItem>
+
       </Select>
     </FormControl>
   </form>
-  )
-
-  const ExistingCourseActions = (
-    <DialogActions>
-      
-        <Button onClick={handleCancel} color="primary">
-          {/* Cancel */}
-        </Button>
-        <Button onClick={e => {
-          handleClose(e)
-          setCourseSelected(tempCouseSelected)
-          setPreviousCourseSelected(tempCouseSelected)
-        }} color="primary">
-          Done
-        </Button>
-
-    </DialogActions>
   )
 
   return (<div>

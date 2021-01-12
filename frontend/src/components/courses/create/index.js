@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as types from '../../../actions/types'
+import * as actions from "../../../actions/courses";
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CloseIcon from '@material-ui/icons/Close';
@@ -23,16 +24,6 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        buttonClicked: (val) => {
-            dispatch({ type: types.SET_OPERATION, payload: val })
-        },
-        dispatchCourse: payload => {
-            dispatch({ type: types.CREATE_COURSE, payload: payload })
-        }
-    };
-}
 
 function validate (values) {
     const errors = {}
@@ -56,6 +47,8 @@ class CreateCourse extends Component {
         return <Slide direction="up" ref={ref} {...props} />;
     });
 
+    closeDiaglog = () => this.setState({ addMenuToggled: false });
+
     handleCourseAddButtonClick = (e, operation, cb) => {
         // console.log(e.target)
         this.props.buttonClicked(true)
@@ -66,10 +59,9 @@ class CreateCourse extends Component {
     }
 
     createCourseSubmit = formProps => {
-        this.handleCourseAddButtonClick(
-            undefined, 
-            () => this.props.dispatchCourse(formProps)
-        )
+        this.props.createCourse(formProps, () => {
+            
+        })
     }
 
     getNewCourse = () => {
@@ -86,7 +78,7 @@ class CreateCourse extends Component {
       
     render() {
         const { classes } = this.props
-        // const { invalid } = this.props
+        const { invalid, submitting } = this.props
         
         return (
             <div className={classes.root}>
@@ -98,7 +90,7 @@ class CreateCourse extends Component {
                 <Dialog fullScreen open={this.state.addMenuToggled} onClose={e => this.handleCourseAddButtonClick(e)} TransitionComponent={this.Transition}>
                     <AppBar className={classes.appBar}>
                         <Toolbar>
-                                <IconButton onClick={e => this.handleCourseAddButtonClick(e)} color='inherit' edge="start" aria-label="close">
+                                <IconButton onClick={this.closeDiaglog} color='inherit' edge="start" aria-label="close">
                                     <CloseIcon />
                                 </IconButton>
 
@@ -106,7 +98,7 @@ class CreateCourse extends Component {
                                     Create a New Course
                                 </Typography>
                                 
-                                <Button disabled={this.props.submitting} onClick={this.props.handleSubmit(this.createCourseSubmit)} color='inherit'>
+                                <Button disabled={submitting || invalid} onClick={this.props.handleSubmit(this.createCourseSubmit)} color='inherit'>
                                     Create
                                 </Button>
                         </Toolbar>
@@ -116,7 +108,7 @@ class CreateCourse extends Component {
                         textAlign: 'center',
                         margin: '0 20px'
                     }}>
-                        <CourseCreateForm />
+                        <CourseCreateForm {...this.props} />
                     </Paper>
 
                 </Dialog>
@@ -125,31 +117,33 @@ class CreateCourse extends Component {
     }
 }
 
+const styles = theme => ({
+    root: {
+        backgroundColor: ''
+    },
+    button: {
+        borderBlock: 'gray'
+    },
+    icon: {
+
+    },
+    appBar: {
+        position: 'relative',
+    },
+    title: {
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+})
+
 export default compose(
     connect(
         mapStateToProps,
-        mapDispatchToProps
+        actions
     ),
     reduxForm({
         form: 'course-create-form',
         validate
     }),
-    withStyles(theme => ({
-        root: {
-            backgroundColor: ''
-        },
-        button: {
-            borderBlock: 'gray'
-        },
-        icon: {
-    
-        },
-        appBar: {
-            position: 'relative',
-        },
-        title: {
-            marginLeft: theme.spacing(1),
-            flex: 1,
-        },
-    }))
+    withStyles(styles)
 )( CreateCourse );

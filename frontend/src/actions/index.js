@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { AUTH_USER, AUTH_ERROR } from './types';
 
-import { fetchUserData } from './fetches'
 
 export const signup = (formProps, callback) => async dispatch => {
   try {
@@ -12,9 +11,9 @@ export const signup = (formProps, callback) => async dispatch => {
 
     dispatch({ type: AUTH_USER, payload: response.data.token });
     localStorage.setItem('token', response.data.token);
-    fetchUserData(response.data.token)(dispatch)
     callback();
   } catch (e) {
+    console.log('error in sign up action: ', e)
     dispatch({ type: AUTH_ERROR, payload: 'Email in use' });
   }
 };
@@ -28,7 +27,6 @@ export const signin = (formProps, callback) => async dispatch => {
 
     dispatch({ type: AUTH_USER, payload: response.data.token });
     localStorage.setItem('token', response.data.token);
-    fetchUserData(response.data.token)
     callback();
   } catch (e) {
     dispatch({ type: AUTH_ERROR, payload: 'Invalid login credentials' });

@@ -4,6 +4,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
+import { withRouter } from "react-router-dom";
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +19,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { TextField } from '@material-ui/core';
+
+import validator from 'validator'
+
 
 function Copyright() {
   return (
@@ -70,6 +75,21 @@ const required = (value, allValues, props, name) => {
     return `Required input`
   } else {
     return undefined
+  }
+}
+
+const validatePassword = value => {
+  // if (!validator.isStrongPassword(value)) {return 'Password is not Strong Enough'}
+  // return undefined
+  const pwdValidate = validator.isStrongPassword(value)
+  console.log(pwdValidate)
+}
+
+const validateEmail = email => {
+  if (!validator.isEmail(email)) {
+    return 'Not a valid email'
+  } else {
+    return ''
   }
 }
 
@@ -131,7 +151,7 @@ function Signup(props) {
             </Grid>
             <Grid item xs={12}>
               <Field
-                validate={required}
+                validate={[required, validateEmail]}
                 component={renderInput}
                 variant="outlined"
                 required
@@ -144,7 +164,7 @@ function Signup(props) {
             </Grid>
             <Grid item xs={12}>
               <Field
-                validate={required}
+                validate={[required, validatePassword]}
                 component={renderInput}
                 variant="outlined"
                 required
@@ -158,7 +178,7 @@ function Signup(props) {
             </Grid>
             <Grid item xs={12}>
               <Field
-                validate={required}
+                validate={[required, validatePassword]}
                 component={renderInput}
                 variant="outlined"
                 required
@@ -223,5 +243,6 @@ export default compose(
   reduxForm({ 
     form: 'signup',
     validate
-  })
+  }),
+  withRouter
 )(Signup);

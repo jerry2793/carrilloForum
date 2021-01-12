@@ -1,6 +1,7 @@
 import { Tabs } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import requireAuth from '../requireAuth'
 
@@ -25,7 +26,7 @@ class Course extends Component {
     
     render() {
         console.log(this.props.courses)
-        
+
         return (
             <div>
                 <h1>My Courses</h1> <CreateCourse />
@@ -41,6 +42,7 @@ class Course extends Component {
     }
 }
 
-export default connect(
-    mapStateToProps,
-)(requireAuth(Course));
+export default compose(
+    connect(mapStateToProps,),
+    requireAuth
+)(Course);

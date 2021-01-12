@@ -1,3 +1,4 @@
+import { Paper } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -13,6 +14,14 @@ function mapStateToProps(state) {
     };
 }
 
+const required = value => {
+    if (!value) {
+        return 'Required! '
+    } else {
+        return undefined
+    }
+}
+
 class CourseCreateForm extends Component {
     state = {
         courseSelected: '',
@@ -26,22 +35,18 @@ class CourseCreateForm extends Component {
     
     render() {
         return (
-            <div>
+            <Paper>
                 <form>
                         <Field
-                            // label="course name"
+                            label="Course Name"
                             name="name"
                             value={'course'}
-                            component={props => (
-                                <Input {...props.input}
-                                    label="Course Name"
-                                    autoFocus
-                                    autoComplete='off'
-                                />
-                            )}
+                            validate={required}
+                            component={Input}
                         />
                         <Field 
-                            label="course type"
+                            label="Course Type"
+                            validate={required}
                             name="course-type"
                             value={this.state.courseSelected}
                             component={props => (<TypeSelect 
@@ -51,15 +56,14 @@ class CourseCreateForm extends Component {
                                 { ...props }
                             />)}
                         />
-                        <Field 
+                        <Field
                             name="description"
-                            component={props => (<Input 
-                                label="Description"
-                                {...props.input}
-                            />)}
+                            validate={required}
+                            label="Course Description"
+                            component={Input}
                         />
                     </form>
-            </div>
+            </Paper>
         );
     }
 }

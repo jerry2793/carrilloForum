@@ -33,10 +33,8 @@ exports.signup = function(req, res, next) {
     }
 
     // If a user with email does NOT exist, create and save user record
-    const user = new User({
-      email: email,
-      password: password
-    });
+    // note i am also going to save whatever is being posted here from redux form
+    const user = new User(req.body);
 
     user.save(function(err) {
       if (err) { return next(err); }

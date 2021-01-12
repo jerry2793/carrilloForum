@@ -1,8 +1,20 @@
 import { TextField } from "@material-ui/core"
 
 export default props => {
+    const {
+        meta, 
+        input,
+        label,
+        ...rest
+    } = props
+    
     return <TextField
+        variant='outlined'
         fullWidth
-        {...props}
+        label={label}
+        error={meta.touched && meta.error}
+        helperText={meta.error}
+        {...input}
+        {...rest}
     />
 }

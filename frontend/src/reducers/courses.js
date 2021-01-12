@@ -9,7 +9,6 @@ const initialState = {
             type: 'as;dlfhqowehoh'
         }
     ],
-    newCourse: {},
     types: [],
 }
 
@@ -23,7 +22,13 @@ export default (state = initialState, action) => {
         case types.CREATE_COURSE:
             return {
                 ...state, 
-                newCourse: payload
+                all: state.all.push(payload)
+            }
+
+        case types.CREATE_COURSE_TYPE:
+            return {
+                ...state,
+                types: state.types.push(payload)
             }
             
         default:
