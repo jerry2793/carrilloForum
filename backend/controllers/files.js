@@ -1,4 +1,6 @@
 // file operation controllers
+
+const express = require('express')
 const router = require('express').Router()
 
 const Authentication = require('../controllers/authentication');
@@ -48,6 +50,8 @@ const upload = multer({
     fileFilter
 })
 
+router.use(express.json())
+
 
 // retrieve the model
 const FileModel = require('../models/files')
@@ -63,9 +67,10 @@ router.get( '/:id', async (req,res,next) => {
 router.post('/', requireAuth, upload.single('file'), (req,res, next) => {
     const { user, file } = req
 
+    console.log(file)
+
     FileModel.create({
         user: user._id,
-        isPublic: req.body.isPublic? true : false,
         filePath: file.path
     })
         .then(fileIns => res.json({ id: fileIns._id, path: file.path }))

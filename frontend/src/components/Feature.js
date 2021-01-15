@@ -1,12 +1,13 @@
 import { Button, ButtonGroup, IconButton, Paper, Typography, withStyles } from '@material-ui/core';
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import { compose } from 'redux';
 
 import * as actions from '../actions/files'
 
 import requireAuth from './requireAuth';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { connect } from 'react-redux';
+
+import UploadWidget from './inputs/UploadWidget'
 
 
 class Feature extends Component {
@@ -19,18 +20,12 @@ class Feature extends Component {
     this.props.history.push(`/${e.target.innerText.toLowerCase().split(' ').pop()}`)
   }
 
-  renderUploadWidget = <IconButton onClick={() => {
-    this.props.upload('c:\\Users\\jerry\\dev\\aws\\aws-key-pair.pem')
-  }}>
-    <CloudUploadIcon />
-  </IconButton>
-  
   render() {
     const { classes } = this.props
 
     return <Paper className={classes.root}>
       <Typography variant='h3'>
-        User Homepage: Welcome! 
+        Welcome! 
       </Typography>
 
       <Paper>
@@ -46,11 +41,11 @@ class Feature extends Component {
 
       </Paper>
 
-      <div styles={{
+      <div style={{
         marginTop: '50px'
       }}>
         <Typography variant='h3'>
-          File Storage System {'>>'} {this.renderUploadWidget}
+          File Storage System {'>>'} <UploadWidget />
         </Typography>
         <Typography variant='body2'>
           Note that the creator of this website 
@@ -64,14 +59,17 @@ class Feature extends Component {
   }
 }
 
-const styles = theme => {
+const styles = theme => ({
   root: {
-    margin: '100px'
+    margin: '5%'
+  },
+  widgetContainer: {
+    margin: '5%'
   }
-}
+})
 
 export default compose(
   connect(null, actions),
   requireAuth,
-  withStyles(styles)
+  withStyles(styles),
 )(Feature);

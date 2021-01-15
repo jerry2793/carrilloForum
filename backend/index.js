@@ -14,16 +14,19 @@ mongoose.connect('mongodb://localhost/carrilloForum');
 // App Setup
 app.use(morgan('combined'));
 app.use(cors());
-app.use(bodyParser.json({ type: '*/*' }));
 
 app.use('/uploads', express.static('uploads'))
 
 
+app.route('/', (req,res) => {
+    res.send('Welcome to the API of Carrillo Forum! ')
+})
+
 // wrap the app into the two routers (no router way)
 router(app);
 
-app.use('/courses',require('./controllers/courses'))
-app.use('/users', require('./controllers/users'))
+app.use('/courses', express.json(), require('./controllers/courses'))
+app.use('/users', express.json(), require('./controllers/users'))
 app.use('/files', require('./controllers/files'))
 
 
