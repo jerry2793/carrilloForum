@@ -1,5 +1,5 @@
-import { InputBase } from "@material-ui/core"
+import { InputBase } from "@material-ui/core";
 
-export default props => {
-    return <InputBase {...props} />
-}
+export default ({ input, meta, ...rest }) => {
+  return <textarea {...input} {...rest} />;
+};
